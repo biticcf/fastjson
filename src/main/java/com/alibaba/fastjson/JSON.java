@@ -1092,7 +1092,7 @@ public abstract class JSON implements JSONStreamAware, JSONAware {
             try {
                 Map<String, Object> values = javaBeanSerializer.getFieldValuesMap(javaObject);
                 for (Map.Entry<String, Object> entry : values.entrySet()) {
-                    json.put(entry.getKey(), toJSON(entry.getValue()));
+                    json.put(entry.getKey(), toJSON(entry.getValue(), config));
                 }
             } catch (Exception e) {
                 throw new JSONException("toJSON error", e);
@@ -1284,5 +1284,5 @@ public abstract class JSON implements JSONStreamAware, JSONAware {
         return null;
     }
 
-    public final static String VERSION = "1.2.60";
+    public final static String VERSION = "1.2.61";
 }
