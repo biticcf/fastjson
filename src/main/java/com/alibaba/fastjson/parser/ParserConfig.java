@@ -68,6 +68,7 @@ public class ParserConfig {
     public static  final String[] DENYS;
     private static final String[] AUTO_TYPE_ACCEPT_LIST;
     public static  final boolean  AUTO_SUPPORT;
+    private static final long[]   INTERNAL_WHITELIST_HASHCODES;
 
     static  {
         {
@@ -86,6 +87,83 @@ public class ParserConfig {
             }
             AUTO_TYPE_ACCEPT_LIST = items;
         }
+
+        String[] types = new String[] {
+                "java.awt.Rectangle",
+                "java.awt.Point",
+                "java.awt.Font",
+                "java.awt.Color",
+
+                "com.alibaba.fastjson.util.AntiCollisionHashMap",
+
+                "com.alipay.sofa.rpc.core.exception.SofaTimeOutException",
+                "java.util.Collections.UnmodifiableMap",
+                "java.util.concurrent.ConcurrentSkipListMap",
+                "java.util.concurrent.ConcurrentSkipListSet",
+
+                "org.springframework.dao.CannotAcquireLockException",
+                "org.springframework.dao.CannotSerializeTransactionException",
+                "org.springframework.dao.CleanupFailureDataAccessException",
+                "org.springframework.dao.ConcurrencyFailureException",
+                "org.springframework.dao.DataAccessResourceFailureException",
+                "org.springframework.dao.DataIntegrityViolationException",
+                "org.springframework.dao.DataRetrievalFailureException",
+                "org.springframework.dao.DeadlockLoserDataAccessException",
+                "org.springframework.dao.DuplicateKeyException",
+                "org.springframework.dao.EmptyResultDataAccessException",
+                "org.springframework.dao.IncorrectResultSizeDataAccessException",
+                "org.springframework.dao.IncorrectUpdateSemanticsDataAccessException",
+                "org.springframework.dao.InvalidDataAccessApiUsageException",
+                "org.springframework.dao.InvalidDataAccessResourceUsageException",
+                "org.springframework.dao.NonTransientDataAccessException",
+                "org.springframework.dao.NonTransientDataAccessResourceException",
+                "org.springframework.dao.OptimisticLockingFailureException",
+                "org.springframework.dao.PermissionDeniedDataAccessException",
+                "org.springframework.dao.PessimisticLockingFailureException",
+                "org.springframework.dao.QueryTimeoutException",
+                "org.springframework.dao.RecoverableDataAccessException",
+                "org.springframework.dao.TransientDataAccessException",
+                "org.springframework.dao.TransientDataAccessResourceException",
+                "org.springframework.dao.TypeMismatchDataAccessException",
+                "org.springframework.dao.UncategorizedDataAccessException",
+
+                "org.springframework.jdbc.BadSqlGrammarException",
+                "org.springframework.jdbc.CannotGetJdbcConnectionException",
+                "org.springframework.jdbc.IncorrectResultSetColumnCountException",
+                "org.springframework.jdbc.InvalidResultSetAccessException",
+                "org.springframework.jdbc.JdbcUpdateAffectedIncorrectNumberOfRowsException",
+                "org.springframework.jdbc.LobRetrievalFailureException",
+                "org.springframework.jdbc.SQLWarningException",
+                "org.springframework.jdbc.UncategorizedSQLException",
+
+                "org.springframework.cache.support.NullValue",
+
+                "org.springframework.security.oauth2.common.DefaultExpiringOAuth2RefreshToken",
+                "org.springframework.security.oauth2.common.DefaultOAuth2AccessToken",
+                "org.springframework.security.oauth2.common.DefaultOAuth2RefreshToken",
+
+                "org.springframework.util.LinkedMultiValueMap",
+                "org.springframework.util.LinkedCaseInsensitiveMap",
+
+                "org.springframework.remoting.support.RemoteInvocation",
+                "org.springframework.remoting.support.RemoteInvocationResult",
+
+                "org.springframework.security.web.savedrequest.DefaultSavedRequest",
+                "org.springframework.security.web.savedrequest.SavedCookie",
+                "org.springframework.security.web.csrf.DefaultCsrfToken",
+                "org.springframework.security.web.authentication.WebAuthenticationDetails",
+
+                "org.springframework.security.core.context.SecurityContextImpl",
+                "org.springframework.security.authentication.UsernamePasswordAuthenticationToken",
+                "org.springframework.security.core.authority.SimpleGrantedAuthority",
+                "org.springframework.security.core.userdetails.User",
+        };
+        long[] hashCodes = new long[types.length];
+        for (int i = 0; i < types.length; i++) {
+            hashCodes[i] = TypeUtils.fnv1a_64(types[i]);
+        }
+        Arrays.sort(hashCodes);
+        INTERNAL_WHITELIST_HASHCODES = hashCodes;
     }
 
     public static ParserConfig getGlobalInstance() {
@@ -125,70 +203,92 @@ public class ParserConfig {
 
     {
         denyHashCodes = new long[]{
-                0x86fc2bf9beaf7aefL,
-                0x8eadd40cb2a94443L,
-                0x8f75f9fa0df03f80L,
-                0x8fd1960988bce8b4L,
-                0x9172a53f157930afL,
-                0x92122d710e364fb8L,
-                0x94305c26580f73c5L,
-                0x9437792831df7d3fL,
-                0xa123a62f93178b20L,
-                0xaa3daffdb10c4937L,
-                0xb7e8ed757f5d13a2L,
-                0xbcdd9dc12766f0ceL,
-                0xc2eb1e621f439309L,
-                0xc7599ebfe3e72406L,
-                0xc963695082fd728eL,
-                0xd9c9dbf6bbd27bb1L,
-                0xdf2ddff310cdb375L,
-                0xe09ae4604842582fL,
-                0xe603d6a51fad692bL,
-                0xe9184be55b1d962aL,
-                0xe9f20bad25f60807L,
-                0xeea210e8da2ec6e1L,
-                0xfc773ae20c827691L,
-                0xfd5bfc610056d720L,
-                0xffdd1a80f1ed3405L,
-                0x761619136cc13eL,
-                0x1603dc147a3e358L,
-                0x45b11bc78a3aba3L,
-                0xee6511b66fd5ef0L,
-                0x10b2bdca849d9b3eL,
-                0x144277b467723158L,
-                0x14db2e6fead04af0L,
-                0x2b3a37467a344cdfL,
-                0x313bb4abd8d4554cL,
-                0x332f0b5369a18310L,
-                0x33c64b921f523f2fL,
-                0x34a81ee78429fdf1L,
-                0x398f942e01920cf0L,
-                0x42d11a560fc9fba9L,
-                0x440e89208f445fb9L,
-                0x46c808a4b5841f57L,
-                0x4a3797b30328202cL,
-                0x4ba3e254e758d70dL,
-                0x4ef08c90ff16c675L,
-                0x4fd10ddc6d13821fL,
-                0x527db6b46ce3bcbcL,
-                0x599b5c1213a099acL,
-                0x5a5bd85c072e5efeL,
-                0x5d92e6ddde40ed84L,
-                0x616323f12c2ce25eL,
-                0x63a220e60a17c7b9L,
-                0x6749835432e0f0d2L,
-                0x746bd4a53ec195fbL,
-                0x74b50bb9260e31ffL,
-                0x767a586a5107feefL,
-                0x7aa7ee3627a19cf3L,
-                0x7bddd363ad3998c6L
+                0x80D0C70BCC2FEA02L,
+                0x86FC2BF9BEAF7AEFL,
+                0x87F52A1B07EA33A6L,
+                0x8EADD40CB2A94443L,
+                0x8F75F9FA0DF03F80L,
+                0x9172A53F157930AFL,
+                0x92122D710E364FB8L,
+                0x92122D710E364FB8L,
+                0x94305C26580F73C5L,
+                0x9437792831DF7D3FL,
+                0xA123A62F93178B20L,
+                0xA85882CE1044C450L,
+                0xAA3DAFFDB10C4937L,
+                0xAFFF4C95B99A334DL,
+                0xB40F341C746EC94FL,
+                0xB7E8ED757F5D13A2L,
+                0xBCDD9DC12766F0CEL,
+                0xC00BE1DEBAF2808BL,
+                0xC2664D0958ECFE4CL,
+                0xC7599EBFE3E72406L,
+                0xC963695082FD728EL,
+                0xD1EFCDF4B3316D34L,
+                0xD9C9DBF6BBD27BB1L,
+                0xDF2DDFF310CDB375L,
+                0xE09AE4604842582FL,
+                0xE1919804D5BF468FL,
+                0xE2EB3AC7E56C467EL,
+                0xE603D6A51FAD692BL,
+                0xE9184BE55B1D962AL,
+                0xE9F20BAD25F60807L,
+                0xFC773AE20C827691L,
+                0xFD5BFC610056D720L,
+                0xFFDD1A80F1ED3405L,
+                0x10E067CD55C5E5L,
+                0x761619136CC13EL,
+                0x3085068CB7201B8L,
+                0x45B11BC78A3ABA3L,
+                0xB6E292FA5955ADEL,
+                0xEE6511B66FD5EF0L,
+                0x10B2BDCA849D9B3EL,
+                0x144277B467723158L,
+                0x14DB2E6FEAD04AF0L,
+                0x154B6CB22D294CFAL,
+                0x193B2697EAAED41AL,
+                0x1E0A8C3358FF3DAEL,
+                0x24D2F6048FEF4E49L,
+                0x275D0732B877AF29L,
+                0x2ADFEFBBFE29D931L,
+                0x2B3A37467A344CDFL,
+                0x2D308DBBC851B0D8L,
+                0x313BB4ABD8D4554CL,
+                0x332F0B5369A18310L,
+                0x339A3E0B6BEEBEE9L,
+                0x33C64B921F523F2FL,
+                0x34A81EE78429FDF1L,
+                0x3826F4B2380C8B9BL,
+                0x398F942E01920CF0L,
+                0x42D11A560FC9FBA9L,
+                0x43320DC9D2AE0892L,
+                0x440E89208F445FB9L,
+                0x46C808A4B5841F57L,
+                0x4A3797B30328202CL,
+                0x4BA3E254E758D70DL,
+                0x4EF08C90FF16C675L,
+                0x4FD10DDC6D13821FL,
+                0x527DB6B46CE3BCBCL,
+                0x5728504A6D454FFCL,
+                0x599B5C1213A099ACL,
+                0x5A5BD85C072E5EFEL,
+                0x5AB0CB3071AB40D1L,
+                0x5D74D3E5B9370476L,
+                0x5D92E6DDDE40ED84L,
+                0x62DB241274397C34L,
+                0x63A220E60A17C7B9L,
+                0x6749835432E0F0D2L,
+                0x746BD4A53EC195FBL,
+                0x74B50BB9260E31FFL,
+                0x75CC60F5871D0FD3L,
+                0x767A586A5107FEEFL,
+                0x7AA7EE3627A19CF3L
         };
 
-        long[] hashCodes = new long[AUTO_TYPE_ACCEPT_LIST.length + 1];
+        long[] hashCodes = new long[AUTO_TYPE_ACCEPT_LIST.length];
         for (int i = 0; i < AUTO_TYPE_ACCEPT_LIST.length; i++) {
             hashCodes[i] = TypeUtils.fnv1a_64(AUTO_TYPE_ACCEPT_LIST[i]);
         }
-        hashCodes[hashCodes.length - 1] = -6293031534589903644L;
 
         Arrays.sort(hashCodes);
         acceptHashCodes = hashCodes;
@@ -803,6 +903,7 @@ public class ParserConfig {
                     && ((!ASMUtils.checkName(annotation.name())) //
                         || annotation.format().length() != 0 //
                         || annotation.deserializeUsing() != Void.class //
+                        || annotation.parseFeatures().length != 0 //
                         || annotation.unwrapped())
                         || (fieldInfo.method != null && fieldInfo.method.getParameterTypes().length > 1)) {
                     asmEnable = false;
@@ -1094,7 +1195,11 @@ public class ParserConfig {
                 ^ className.charAt(2))
                 * PRIME;
 
-        if (autoTypeSupport || expectClassFlag) {
+        boolean internalWhite = Arrays.binarySearch(INTERNAL_WHITELIST_HASHCODES,
+                TypeUtils.fnv1a_64(className)
+        ) >= 0;
+
+        if ((!internalWhite) && (autoTypeSupport || expectClassFlag)) {
             long hash = h3;
             for (int i = 3; i < className.length(); ++i) {
                 hash ^= className.charAt(i);
@@ -1121,6 +1226,10 @@ public class ParserConfig {
 
         if (clazz == null) {
             clazz = typeMapping.get(typeName);
+        }
+
+        if (internalWhite) {
+            clazz = TypeUtils.loadClass(typeName, defaultClassLoader, true);
         }
 
         if (clazz != null) {
